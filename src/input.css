@@ -1,0 +1,314 @@
+@import "tailwindcss";
+@source "../**/*.php";
+
+/* 1. テーマ変数の定義（一箇所にまとめると管理しやすいです） */
+@theme {
+    /* ゴシック体：Mac/Win/スマホでバランスが良い並び */
+    --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "游ゴシック体", "Meiryo", "Helvetica Neue", Arial, sans-serif;
+
+    /* 明朝体：Noto Serif JPを優先 */
+    --font-serif: "Noto Serif JP", "YuMincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+
+    /* その他、サイト独自のカラーなどがあればここに追加 */
+    /* ─────────────────────────────────────────────
+   デフォルトテーマ（blue）
+   ※ @theme はデフォルト値の一度だけの定義場所
+   ───────────────────────────────────────────── */
+
+    --color-primary: #007BFF;
+    --color-secondary: #00D2FF;
+    --color-accent: #FFD700;
+    --color-cta: #FF5722;
+    --color-light: #F0F9FF;
+    --color-text-dark: #1E293B;    
+        
+    /*faqのまる用*/
+    --color-info-600: #e45f2b;
+    --color-info-700: #fa510f;
+    --color-orange: #E8732A;
+    --color-orange-light: #F5A05A;
+    --color-orange-bg: #FDF6F0;
+}
+/* 2. 基本スタイルの設定 */
+@layer base {
+    html {
+        /* ブラウザごとのフォントの太さの差異を調整 */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        /* OS側のテキスト拡大による崩れを防止 */
+        text-size-adjust: 100%;
+    }
+
+    body {
+        /* サイト全体のデフォルト設定 */
+        font-family: var(--font-sans);
+        /* デフォルトをゴシックに設定 */
+        line-height: 1.6;
+        font-size: 16px;
+        color: var(--color-text-dark);
+        /* text-text-darkを使っている場合 */
+    }
+}
+
+
+
+/* ─────────────────────────────────────────────
+   デフォルトテーマ（blue）
+   ※ @theme はデフォルト値の一度だけの定義場所
+───────────────────────────────────────────── */
+
+
+
+/* ─────────────────────────────────────────────
+   カスタムコンポーネント
+   var() でテーマ変数を参照するため @theme 外に記述
+───────────────────────────────────────────── */
+@layer components {
+
+.problem-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.problem-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-primary);
+    box-shadow: 0 20px 25px -5px rgba(0, 123, 255, 0.1);
+}
+
+.solution-box {
+        background-color: color-mix(in srgb, var(--color-accent) 15%, white);
+        border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+.solution-box {
+    background-color: color-mix(in srgb, var(--color-accent) 5%, white);
+}
+
+    /* 問題カードの番号バッジ（Q01 等） */
+.problem-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        padding: 2px 7px;
+        border-radius: 99px;
+        background-color: color-mix(in srgb, var(--color-accent) 30%, white);
+        color: color-mix(in srgb, var(--color-primary) 80%, black);
+        border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
+}
+
+.marker {
+    background: linear-gradient(transparent 60%, color-mix(in srgb, var(--color-accent) 60%, white) 60%);
+    font-weight: 700;
+}
+
+}
+
+/* ─────────────────────────────────────────────
+   テーマバリアント
+   通常の CSS セレクタで var() を上書きするだけ
+   ※ すべてのテーマで同じ変数セットを定義すること
+───────────────────────────────────────────── */
+        /* 信頼感を残しつつ温かみを出した赤系配色 */
+.theme-red {
+    --color-primary: #C62828;
+    --color-secondary: #EF5350;
+    --color-accent: #FFCC80;
+    --color-cta: #FF7043;
+    --color-light: #FFF5F5;
+    --color-text-dark: #3E2723;
+}
+        /* 安心感・自然・信頼感を感じるグリーン系配色 */
+.theme-green {
+    --color-primary: #2E7D32;
+    --color-secondary: #66BB6A;
+    --color-accent: #FFD54F;
+    --color-cta: #FF8A65;
+    --color-light: #F3FBF4;
+    --color-text-dark: #1F2937;
+}
+/* 上品さ・信頼感・落ち着きを感じる紫系配色 */
+.theme-purple {
+    --color-primary: #6A1B9A;
+    --color-secondary: #AB47BC;
+    --color-accent: #FFD180;
+    --color-cta: #FF8A65;
+    --color-light: #FAF5FF;
+    --color-text-dark: #2D2438;
+}
+ /* 重厚感・安心感・和風の落ち着きを感じる焦げ茶系配色 */
+.theme-brown {
+    --color-primary: #5D4037;
+    --color-secondary: #8D6E63;
+    --color-accent: #D4B06A;
+    --color-cta: #C96C4A;
+    --color-light: #F8F5F2;
+    --color-text-dark: #2B211D;
+}
+
+.theme-pastel {
+    --color-primary: #75cce8;
+    --color-secondary: #a5dee5;
+    --color-accent: #f7db70;
+    --color-cta: #d6a3dc;
+    --color-light: #FFFDFB;
+    --color-text-dark: #363e49;
+}
+/*茶系　明るい（Vivid & Energetic）*/
+.theme-vivid {
+    --color-primary: #e05c1a;
+        --color-secondary: #f5a623;
+        --color-accent: #ffe180;
+        --color-light: #fff4e0;
+        --color-cta: #c43b0a;
+        --color-text-dark: #3a1e08;
+        --color-info-600: #d44010;
+        --color-info-700: #c43b0a;
+}
+/*落ち着いた（Calm & Sophisticated）*/
+.theme-calm {
+        --color-secondary: #7aa3c0;
+        --color-accent: #c9a96e;
+        --color-light: #f0ece5;
+        --color-cta: #8b5a2b;
+        --color-text-dark: #1e2a36;
+        --color-info-600: #7a4e24;
+        --color-info-700: #8b5a2b;
+}
+/*透明な感じ（Clear & Crystalline）*/
+.theme-clear {
+    --color-primary: #2e8fb0;
+        --color-secondary: #7cc8e0;
+        --color-accent: #ffe680;
+        --color-light: #eaf8fb;
+        --color-cta: #e07b20;
+        --color-text-dark: #0d2e3a;
+        --color-info-600: #c56b18;
+        --color-info-700: #e07b20;
+}
+
+.theme-fresh {
+    --color-primary: #158a62;
+        --color-secondary: #6adbb4;
+        --color-accent: #ffe05c;
+        --color-light: #e8faf4;
+        --color-cta: #e84f00;
+        --color-text-dark: #1a2e2a;
+        --color-info-600: #cc4500;
+        --color-info-700: #e84f00;
+}
+.sunny-modern-warm {
+    --color-primary: #432818;
+    --color-secondary: #f48c06;
+    --color-accent: #ffba08;
+    --color-light: #fefae0;
+    --color-cta: #dc2f02;
+    --color-text-dark: #2c1a10;
+    --color-info-600: #faa307;
+    --color-info-700: #e85d04;
+}
+.natural-orange{
+    --color-primary: #7a4b2c;
+        --color-secondary: #d97745;
+        --color-accent: #f6c177;
+        --color-light: #fff8f3;
+        --color-cta: #e4572e;
+        --color-text-dark: #3b2a1f;
+        --color-info-600: #d97745;
+        --color-info-700: #c2410c;
+}
+.salmon_pink{
+    --color-primary: #8c4a4a;
+        --color-secondary: #e5989b;
+        --color-accent: #fbc4ab;
+        --color-light: #fff5f5;
+        --color-cta: #e76f51;
+        --color-text-dark: #4a2c2a;
+        --color-info-600: #e5989b;
+        --color-info-700: #d65a5a;
+}
+.green_beige{
+    --color-primary: #4a6b50;
+        --color-secondary: #8bbf9f;
+        --color-accent: #f2d6a2;
+        --color-light: #f7faf7;
+        --color-cta: #d97745;
+        --color-text-dark: #2f3e34;
+        --color-info-600: #6fae8a;
+        --color-info-700: #4a8f6a;
+}
+.dull_terracotta{
+        --color-primary: #6b3e2e;
+        --color-secondary: #c97b63;
+        --color-accent: #e6b89c;
+        --color-light: #fff7f3;
+        --color-cta: #c44536;
+        --color-text-dark: #3a2a24;
+        --color-info-600: #c97b63;
+        --color-info-700: #a44a3f;
+}
+.bank_theme{
+        --color-primary: #0f2a44;
+            --color-secondary: #4a6fa5;
+            --color-accent: #f2c57c;
+            --color-light: #f7f9fc;
+            --color-cta: #d9653b;
+            --color-text-dark: #1c2b39;
+            --color-info-600: #4a6fa5;
+            --color-info-700: #2f4f7f;
+}
+
+
+/*****************************************************************************/
+/* ブログ投稿の見た目 */
+/*****************************************************************************/
+
+.entry-content h2 {
+    @apply text-2xl font-bold text-gray-900 border-l-4 border-primary pl-4 pb-2 border-b border-gray-200 mt-12 mb-6;
+}
+.entry-content h3 {
+    @apply text-xl font-bold text-gray-800 pb-2 border-b border-gray-100 mt-10 mb-5;
+}
+.entry-content p {
+    @apply mb-6 leading-loose;
+}
+.entry-content hr {
+    @apply my-12 border-0 border-b border-gray-200;
+}
+.entry-content ul li {
+    @apply py-2 border-b border-gray-50 last:border-0;
+}
+
+
+/*****************************************************************************/
+/* ページネーション */
+/*****************************************************************************/
+
+.page-numbers {
+    @apply flex justify-center gap-2 list-none p-0;
+}
+.page-numbers li {
+    @apply inline-block;
+}
+.page-numbers a,
+.page-numbers .current {
+    @apply w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm transition-colors border border-gray-200;
+}
+.page-numbers a {
+    @apply bg-white text-gray-500 hover:bg-gray-100;
+}
+.page-numbers .current {
+    @apply bg-primary text-white border-primary shadow-md;
+}
+
+
+/*****************************************************************************/
+/* お問い合わせページ内スクロールボックス */
+/*****************************************************************************/
+.max-h-60.entry-content h2 {
+    @apply text-base mt-4 mb-2;
+}
