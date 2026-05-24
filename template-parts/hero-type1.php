@@ -16,31 +16,41 @@ $button_text = get_field('button_text', $target_id);
 $phone = $pages['settings'] ? get_field('phone_number', $pages['settings']->ID) : '';
 $phone_clean = str_replace('-', '', $phone);
 
-/**
- * 画像のURLを安全に取得するための処理
- */
-$img_url = '';
-if (is_array($hero_img)) {
-    // ACFの設定が「画像配列」の場合
-    $img_url = $hero_img['url'];
-} elseif (is_string($hero_img)) {
-    // ACFの設定が「画像URL」の場合
-    $img_url = $hero_img;
-}
 ?>
 
-<section class="relative w-full h-[80vh] min-h-[500px] flex items-center justify-center bg-gray-900 overflow-hidden">
+<section class="relative w-full h-[80vh] min-h-[500px] flex items-center justify-center bg-white overflow-hidden">
 
-    <!-- HERO画像: $img_url を使用 -->
-    <?php if ($img_url): ?>
-        <img src="<?php echo esc_url($img_url); ?>" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover">
+    <!-- HERO画像 -->
+
+    <?php if ($hero_img): ?>
+
+        <?php
+        $image_id = is_array($hero_img)
+            ? $hero_img['ID']
+            : $hero_img;
+        ?>
+
+        <?= wp_get_attachment_image(
+            $image_id,
+            'full',
+            false,
+            [
+                'class' => 'absolute inset-0 w-full h-full object-cover',
+                'loading' => 'eager',
+                'fetchpriority' => 'high',
+                'decoding' => 'async',
+            ]
+        ); ?>
+
     <?php endif; ?>
+
+
 
     <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-6 text-center text-white">
         <span class="block text-sm md:text-base font-semibold tracking-widest text-accent uppercase mb-3"><?php echo esc_html($copy_en); ?></span>
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-tight mb-6 [&_br]:hidden md:[&_br]:inline"><?php echo nl2br(esc_html($main_copy)); ?></h1>
+        <h1 class="font-serif text-white text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-tight mb-6 [&_br]:hidden md:[&_br]:inline"><?php echo nl2br(esc_html($main_copy)); ?></h1>
         <p class="font-serif max-w-3xl mx-auto text-lg md:text-xl text-white/90 leading-relaxed mb-10 [&_br]:hidden md:[&_br]:inline"><?php echo nl2br(esc_html($sub_copy)); ?></p>
         <div class="flex flex-wrap justify-center gap-4">
             <a href="<?php echo home_url('/contact/'); ?>" class="inline-flex items-center px-8 py-4 bg-cta text-white rounded-full font-bold text-lg hover:brightness-110 transition-all duration-300 hover:scale-105"><?php echo esc_html($button_text); ?></a>

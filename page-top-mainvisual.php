@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+
+<!--hero-->
 <?php
 
 $pages = [
@@ -10,167 +12,24 @@ $pages = [
     'flow'     => get_page_by_path('top-flow'),
     'greeting' => get_page_by_path('top-greeting'),
     'settings' => get_page_by_path('settings'),
+    'contact'  => get_page_by_path('top-contact'),
+    'footer'   => get_page_by_path('top-footer'),
 ];
 
-$visual_id = $pages['visual'] ? $pages['visual']->ID : null;
-$hero_img  = get_field('hero_image', $visual_id);
+// 表示するタイプを決定する。取得先は「現在のページ」または「visual用固定ページ」
+$target_id   = $pages['visual'] ? $pages['visual']->ID : null;
+$hero_type = get_field('hero_type', $target_id);
+
+
+if (!$hero_type) {
+    $hero_type = 'type1';
+}
+
+// テンプレートパーツを読み込む
+get_template_part('template-parts/hero', $hero_type);
+
 ?>
-
-<!-- hero -->
-<section class="relative w-full h-[80vh] min-h-[500px] flex items-center justify-center bg-gray-900 overflow-hidden">
-
-    <!-- HERO画像 -->
-    <img src="<?php echo esc_url($hero_img['url']); ?>" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover">
-
-    <!-- オーバーレイ -->
-    <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent"></div>
-    <!-- コンテンツ -->
-    <div class="relative z-10 max-w-7xl mx-auto px-6 text-center text-white">
-
-        <!-- 英語タイトル -->
-        <span class="block text-sm md:text-base font-semibold tracking-widest text-accent uppercase mb-3">
-            <?php echo get_field('copy_in_english', $visual_id); ?>
-        </span>
-
-        <!-- メインタイトル -->
-        <!-- [&_br]:hidden md:[&_br]:inline PCでは改行を生かしスマホでは改行させない-->
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-tight mb-6 [&_br]:hidden md:[&_br]:inline">
-            <?php echo nl2br(get_field('main_copy', $visual_id)); ?>
-        </h1>
-
-        <!-- 説明文（固定でもOK・後でカスタムフィールド化推奨） -->
-        <!-- [&_br]:hidden md:[&_br]:inline PCでは改行を生かしスマホでは改行させない-->
-        <p class="font-serif max-w-3xl mx-auto text-lg md:text-xl text-white/90 leading-relaxed mb-10 [&_br]:hidden md:[&_br]:inline">
-            <?php echo nl2br(get_field('copy', $visual_id)); ?>
-        </p>
-
-        <!-- ボタン -->
-
-        <a href="<?php echo home_url('/contact/'); ?>"
-            class="inline-flex items-center px-8 py-4 bg-cta text-white rounded-full font-bold text-lg hover:brightness-110 transition-all duration-300 hover:scale-105">
-            <?php echo get_field('button_text', $visual_id); ?>
-        </a>
-
-
-    </div>
-</section>
-<!-- end of hero -->
-
-<!--hero 似顔絵-->
-<!--
-<section class="relative overflow-hidden bg-white min-h-[420px] flex items-center">
-
-    <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute top-0 left-0 right-0 h-full bg-orange-bg rounded-bl-[80px] rounded-tr-[80px]"></div>
-    </div>
-
-    <div class="relative z-10 max-w-7xl mx-auto px-6 py-12 w-full">
-        <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-6">
-
-            <div class="flex-1">
-                <span class="block text-sm md:text-base font-semibold tracking-widest text-info-600 uppercase mb-4">
-                    <?php echo get_field('copy_in_english', $page->ID); ?>
-                </span>
-
-                <div class="max-w-xl">
-                    <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tighter leading-tight mb-6">
-                        <?php echo get_field('main_copy', $page->ID); ?>
-                    </h1>
-
-                    <p class="text-lg text-gray-600 mb-8">
-                        <?php echo get_field('copy', $page->ID); ?>
-                    </p>
-                </div>
-
-                <div class="flex items-center gap-4">
-                    <a href="<?php echo home_url('/contact/'); ?>"
-                        class="inline-flex items-center px-8 py-4 bg-cta text-white rounded-full font-bold text-lg hover:brightness-110 transition-colors">
-                        無料相談はこちら
-                    </a>
-
-                    <a href="<?php echo home_url('/contact/'); ?>"
-                        class="inline-flex items-center px-8 py-4 bg-cta text-white rounded-full font-bold text-lg hover:brightness-110 transition-colors">
-                        無料相談はこちら
-                    </a>
-
-
-
-                </div>
-            </div>
-
-            <div class="relative flex-shrink-0 lg:transform lg:-translate-x-20 xl:-translate-x-32 z-20">
-
-                <div class="absolute inset-0 bg-orange-200 opacity-50 transform translate-x-6 translate-y-6 -z-10"
-                    style="border-radius: 70% 30% 50% 50% / 55% 48% 30% 30%;">
-                </div>
-
-                <div class="w-72 h-72 lg:w-96 lg:h-96 bg-gray-100 overflow-hidden border-4 border-white relative shadow-xl"
-                    style="border-radius: 70% 30% 50% 50% / 55% 48% 30% 30%;">
-
-                    <img src="<?php echo esc_url($image['url']); ?>" alt="代表 サンプル太郎" class="w-full h-full object-cover object-top" />
-
-                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white text-center py-3 px-2">
-                        <p class="text-xs text-gray-300">サンプル行政書士事務所</p>
-                        <p class="text-sm font-bold">代表　サンプル太郎</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
--->
-
-
-
-
-
-
 <!--hero-->
-<!-- 
-<section class="relative w-full overflow-hidden" style="background-color: color-mix(in srgb, var(--color-light) 40%, white);">
-    <div class="relative h-[60vh] md:h-[70vh] w-full">
-        <img src="<?php echo esc_url($image['url']); ?>"
-            alt=" Hero Background"
-            class="absolute inset-0 w-full h-full object-cover">
-    </div>
-    <div class="relative z-10 max-w-5xl mx-auto px-4 -mt-32 md:-mt-48">
-        <div class="bg-white/30 backdrop-blur-xl p-8 md:p-10 rounded-3xl text-center border border-primary/30">
-
-            <span class="block text-sm md:text-base font-semibold tracking-widest text-info-600 uppercase mb-4">
-                <?php
-                $en = get_field('copy_in_english', $page->ID);
-                echo $en;
-                ?>
-            </span>
-            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tighter leading-tight mb-6">
-                <?php
-                $main = get_field('main_copy', $page->ID);
-                echo $main;
-                ?>
-            </h1>
-            <div class="w-16 h-1 bg-primary mx-auto mb-8 md:mb-10"></div>
-
-            <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-800 leading-relaxed mb-10 md:mb-12">
-                <?php
-                $copy = get_field('copy', $page->ID);
-                echo $copy;
-                ?>
-            </p>
-              <a href="<?php echo home_url('/contact/'); ?>"
-                class="inline-flex items-center px-8 py-4 bg-cta text-white rounded-full font-bold text-lg hover:brightness-110 transition-colors">
-                <?php
-                $btn = get_field('button_text', $page->ID);
-                echo $btn;
-                ?>
-            </a>
-        </div>
-    </div>
-</section> 
--->
-<!--hero-->
-
-
 
 
 
@@ -188,7 +47,7 @@ $omakase_body = $data['omakase_body'] ?? '';
 ?>
 
 
-<section class="py-16 md:py-24 bg-light">
+<section class="py-16 md:py-24 ">
 
     <div class="max-w-7xl mx-auto px-6">
 
@@ -209,9 +68,9 @@ $omakase_body = $data['omakase_body'] ?? '';
         <!-- お悩み実例ループ -->
 
         <?php if (!empty($worries)) : ?>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 md:mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 md:mb-12">
                 <?php foreach ($worries as $index => $worry) : ?>
-                    <div class="problem-card rounded-[2.5rem] p-8 bg-white border border-gray-200 shadow-sm">
+                    <div class="problem-card rounded-2xl md:rounded-[2.5rem] p-6 md:p-8 bg-white border border-gray-200 shadow-sm">
                         <dl>
                             <dt class="flex items-center gap-3 mb-4">
                                 <div class="flex items-center gap-2">
@@ -238,10 +97,6 @@ $omakase_body = $data['omakase_body'] ?? '';
             </div>
         <?php endif; ?>
 
-
-
-
-
         <!-- arrow -->
         <div class="flex flex-col items-center gap-0.5 mb-12 animate-bounce">
             <div class="w-0 h-0
@@ -257,10 +112,8 @@ $omakase_body = $data['omakase_body'] ?? '';
         </div>
 
 
-
-
         <!-- おまかせください -->
-        <div class="max-w-4xl mx-auto rounded-[3rem] p-10 md:p-20 relative overflow-hidden bg-white border-2 border-primary">
+        <div class="max-w-4xl mx-auto rounded-3xl md:rounded-[2.5rem] px-6 py-8 md:p-20 relative overflow-hidden bg-white border-2 border-primary">
 
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-primary"></div>
             <?php if ($omakase_head) : ?>
@@ -287,9 +140,6 @@ $omakase_body = $data['omakase_body'] ?? '';
 
 
 <!-- service -->
-
-
-
 <?php
 $service_id = $pages['services'] ? $pages['services']->ID : null;
 $data = get_post_meta($service_id, '_services_section', true);
@@ -299,9 +149,8 @@ $section_subtitle = $data['section_subtitle'] ?? '';
 $services      = $data['services']      ?? [];
 ?>
 
-
-<section class="py-16 md:py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-16 md:py-24 bg-light">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
         <?php if ($section_title) : ?>
             <div class="text-center mb-12 md:mb-16">
@@ -320,7 +169,7 @@ $services      = $data['services']      ?? [];
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php foreach ($services as $service) : ?>
 
-                    <div class="group p-8 rounded-2xl bg-light hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-primary/20">
+                    <div class="group p-8 rounded-2xl bg-white hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-primary/20">
 
                         <?php if (!empty($service['icon'])) : ?>
                             <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
@@ -402,7 +251,6 @@ $services      = $data['services']      ?? [];
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-
     </div>
 </section>
 
@@ -410,7 +258,7 @@ $services      = $data['services']      ?? [];
 
 <!-- top-reason -->
 <section class="py-16 md:py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
         <?php
         $page_reason = get_page_by_path('top-reason');
         $reason_id = $page_reason ? $page_reason->ID : null;
@@ -503,9 +351,6 @@ $services      = $data['services']      ?? [];
                 <?php endfor; ?>
             </div>
         </div>
-
-
-
     </div>
 </section>
 <!-- flow -->
@@ -535,7 +380,7 @@ $services      = $data['services']      ?? [];
                 <?php echo nl2br(get_field('greeting_message', $greeting_id)); ?>
             </p>
             <div class="inline-block border-l-4 border-primary pl-4">
-                <p class="font-serif text-2xl font-bold text-text-dark">
+                <p class="font-serif  text-2xl font-bold text-text-dark">
                     <?php echo get_field('director_name', $greeting_id); ?>
                 </p>
             </div>
@@ -544,25 +389,29 @@ $services      = $data['services']      ?? [];
 </section>
 
 
-
-
+<!-- contact -->
+<?php
+$pages = get_page_by_path('top-contact');
+$target_id = $pages ? $pages->ID : null;
+$contact_copy = get_field('contact_copy', $target_id);
+$contact_button_copy = get_field('contact_button_copy', $target_id);
+?>
 
 <!--contact-->
-
 <section class="py-16 md:py-24 bg-white">
     <div class="max-w-5xl mx-auto px-6">
-        <div class="bg-primary rounded-[3rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl shadow-primary/30">
+        <div class="bg-primary rounded-2xl md:rounded-[3rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl shadow-primary/30">
 
             <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-white/10 rounded-full"></div>
 
             <div class="relative z-10">
-                <h2 class="font-serif text-2xl md:text-3xl font-bold mb-10">まずはお気軽にご相談ください</h2>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold mb-10"><?php echo $contact_copy; ?></h2>
                 <div class="flex flex-col md:flex-row gap-6 justify-center">
 
 
                     <a href="<?php echo home_url('/contact/'); ?>"
-                        class="px-12 py-5 bg-cta text-white rounded-full font-black text-lg transition-all duration-300 hover:scale-105 shadow-lg">
-                        お問い合わせフォーム
+                        class="px-6 py-5 bg-cta text-white rounded-full font-black text-lg transition-all duration-300 hover:scale-105 shadow-lg">
+                        <?php echo $contact_button_copy; ?>
                     </a>
                     <?php
                     $page = get_page_by_path('settings');
@@ -572,9 +421,8 @@ $services      = $data['services']      ?? [];
                         $reception_hours = get_field('reception_hours', $page->ID);
                     }
                     ?>
-
                     <a href=" tel:<?php echo $phone_clean; ?>"
-                        class="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white px-12 py-5 rounded-full font-black text-lg transition-all border border-white/30 flex items-center justify-center gap-3">
+                        class="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white px-6 py-5 rounded-full font-black text-lg transition-all duration-300 hover:scale-105 border border-white/30 flex items-center justify-center gap-3">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
@@ -589,8 +437,6 @@ $services      = $data['services']      ?? [];
         </div>
     </div>
 </section>
-
-
 <!--contact-->
 
 

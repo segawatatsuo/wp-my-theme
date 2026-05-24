@@ -3,12 +3,11 @@
 
 /* 1. テーマ変数の定義（一箇所にまとめると管理しやすいです） */
 @theme {
-    /* ゴシック体：Mac/Win/スマホでバランスが良い並び */
-    --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "游ゴシック体", "Meiryo", "Helvetica Neue", Arial, sans-serif;
 
-    /* 明朝体：Noto Serif JPを優先 */
-    --font-serif: "Noto Serif JP", "YuMincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
-
+    /* Noto Sans JP を最優先にし、Mac・Winの標準ゴシックをフォールバックに配置 */
+    --font-sans: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "YuGothic-Medium", "Yu Gothic", "Meiryo", sans-serif;
+    --font-din: "Barlow", "DIN Alternate", "Arial Next", sans-serif;
+    
     /* その他、サイト独自のカラーなどがあればここに追加 */
     /* ─────────────────────────────────────────────
    デフォルトテーマ（blue）
@@ -40,14 +39,24 @@
     }
 
     body {
-        /* サイト全体のデフォルト設定 */
-        font-family: var(--font-sans);
-        /* デフォルトをゴシックに設定 */
-        line-height: 1.6;
-        font-size: 16px;
-        color: var(--color-text-dark);
-        /* text-text-darkを使っている場合 */
+
+
+/* 1. 文字をシャープに補正 */
+    @apply antialiased;
+    /* 2. 基本の太さを400ではなく「500（medium）」にしてはっきりさせる（最重要！） */
+    @apply font-medium;
+    /* 3. 文字色をしっかり濃いめのグレーにして視認性をあげる */
+    @apply text-neutral-800;
+            
     }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            @apply font-bold text-neutral-900 tracking-tight;
+        }
 }
 
 

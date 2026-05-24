@@ -16,22 +16,31 @@ $button_text = get_field('button_text', $target_id);
 $phone = $pages['settings'] ? get_field('phone_number', $pages['settings']->ID) : '';
 $phone_clean = str_replace('-', '', $phone);
 
-/**
- * 画像のURLを安全に取得するための処理
- */
-$img_url = '';
-if (is_array($hero_img)) {
-    // ACFの設定が「画像配列」の場合
-    $img_url = $hero_img['url'];
-} elseif (is_string($hero_img)) {
-    // ACFの設定が「画像URL」の場合
-    $img_url = $hero_img;
-}
 ?>
 
 <section class="relative w-full overflow-hidden bg-white">
     <div class="relative h-[60vh] md:h-[70vh] w-full">
-        <img src="<?php echo esc_url($hero_img['url']); ?>" alt="" class="absolute inset-0 w-full h-full object-cover">
+        <?php if ($hero_img): ?>
+
+            <?php
+            $image_id = is_array($hero_img)
+                ? $hero_img['ID']
+                : $hero_img;
+            ?>
+
+            <?= wp_get_attachment_image(
+                $image_id,
+                'full',
+                false,
+                [
+                    'class' => 'absolute inset-0 w-full h-full object-cover',
+                    'loading' => 'eager',
+                    'fetchpriority' => 'high',
+                    'decoding' => 'async',
+                ]
+            ); ?>
+
+        <?php endif; ?>
     </div>
     <div class="relative z-10 max-w-5xl mx-auto px-4 -mt-32 md:-mt-48">
         <div class="bg-white/30 backdrop-blur-xl p-8 md:p-10 rounded-3xl text-center border border-primary/30">

@@ -70,7 +70,7 @@ $omakase_body = $data['omakase_body'] ?? '';
         <?php if (!empty($worries)) : ?>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 md:mb-12">
                 <?php foreach ($worries as $index => $worry) : ?>
-                    <div class="problem-card rounded-2xl md:rounded-[2.5rem] p-6 md:p-8 bg-white border border-gray-200 shadow-sm">
+                    <div class="problem-card rounded-2xl md:rounded-[2.5rem] p-6 md:p-8 bg-white border-4 border-gray-200 shadow-sm">
                         <dl>
                             <dt class="flex items-center gap-3 mb-4">
                                 <div class="flex items-center gap-2">
@@ -427,7 +427,7 @@ $contact_button_copy = get_field('contact_button_copy', $target_id);
                             <path
                                 d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                         </svg>
-                        <span class="tracking-wider">
+                        <span class="font-din tracking-wider">
                             <?php echo $phone; ?>
                         </span>
                     </a>

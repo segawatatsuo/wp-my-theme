@@ -50,6 +50,34 @@ function my_theme_widgets_init()
 }
 add_action('widgets_init', 'my_theme_widgets_init');
 
+
+
+/*これでブラウザが最優先で画像を取得します。*/
+function preload_hero_image()
+{
+
+    if (is_front_page()) {
+
+        $page = get_page_by_path('top-mainvisual');
+
+        if ($page) {
+
+            $hero_img = get_field('hero_img', $page->ID);
+
+            if ($hero_img) {
+
+                $image_url = wp_get_attachment_image_url($hero_img, 'full');
+
+                echo '<link rel="preload" as="image" href="' . esc_url($image_url) . '">';
+            }
+        }
+    }
+}
+add_action('wp_head', 'preload_hero_image', 1);
+
+
+
+
 /////////////////////////////
 //      tailwindcss
 /////////////////////////////

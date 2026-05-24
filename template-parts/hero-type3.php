@@ -15,18 +15,6 @@ $button_text = get_field('button_text', $target_id);
 // 電話番号取得
 $phone = $pages['settings'] ? get_field('phone_number', $pages['settings']->ID) : '';
 $phone_clean = str_replace('-', '', $phone);
-
-/**
- * 画像のURLを安全に取得するための処理
- */
-$img_url = '';
-if (is_array($hero_img)) {
-    // ACFの設定が「画像配列」の場合
-    $img_url = $hero_img['url'];
-} elseif (is_string($hero_img)) {
-    // ACFの設定が「画像URL」の場合
-    $img_url = $hero_img;
-}
 ?>
 
 
@@ -47,7 +35,27 @@ if (is_array($hero_img)) {
             <div class="relative flex-shrink-0 lg:transform lg:-translate-x-20 xl:-translate-x-32 z-20">
                 <div class="absolute inset-0 bg-orange-200 opacity-50 transform translate-x-6 translate-y-6 -z-10" style="border-radius: 70% 30% 50% 50% / 55% 48% 30% 30%;"></div>
                 <div class="w-72 h-72 lg:w-96 lg:h-96 bg-gray-100 overflow-hidden border-4 border-white relative shadow-xl" style="border-radius: 70% 30% 50% 50% / 55% 48% 30% 30%;">
-                    <img src="<?php echo esc_url($hero_img['url']); ?>" alt="代表" class="w-full h-full object-cover object-top" />
+                    <?php if ($hero_img): ?>
+
+                        <?php
+                        $image_id = is_array($hero_img)
+                            ? $hero_img['ID']
+                            : $hero_img;
+                        ?>
+
+                        <?= wp_get_attachment_image(
+                            $image_id,
+                            'full',
+                            false,
+                            [
+                                'class' => 'absolute inset-0 w-full h-full object-cover',
+                                'loading' => 'eager',
+                                'fetchpriority' => 'high',
+                                'decoding' => 'async',
+                            ]
+                        ); ?>
+
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
