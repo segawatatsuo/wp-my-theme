@@ -45,9 +45,10 @@ $phone_clean = str_replace('-', '', $phone);
     <?php endif; ?>
 
 
-
-    <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent"></div>
-
+    <!--
+    <div class="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-transparent"></div>
+    -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[rgb(0_0_0/0.4)] via-[rgb(0_0_0/0.2)] to-transparent"></div>
     <div class="relative z-10 max-w-7xl mx-auto px-6 text-center text-white">
         <span class="block text-sm md:text-base font-semibold tracking-widest text-accent uppercase mb-3"><?php echo esc_html($copy_en); ?></span>
         <h1 class="font-serif text-white text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-tight mb-6 [&_br]:hidden md:[&_br]:inline"><?php echo nl2br(esc_html($main_copy)); ?></h1>
