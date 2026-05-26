@@ -51,7 +51,7 @@ $phone_clean = str_replace('-', '', $phone);
                                 'class' => 'absolute inset-0 w-full h-full object-cover',
                                 'loading' => 'eager',
                                 'fetchpriority' => 'high',
-                                'decoding' => 'async',
+                                'decoding' => 'sync',
                             ]
                         ); ?>
 

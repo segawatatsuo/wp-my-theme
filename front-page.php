@@ -32,7 +32,6 @@ get_template_part('template-parts/hero', $hero_type);
 <!--hero-->
 
 
-
 <!-- top-problem -->
 <?php
 $problem_id = $pages['problem'] ? $pages['problem']->ID : null;
@@ -47,7 +46,7 @@ $omakase_body = $data['omakase_body'] ?? '';
 ?>
 
 
-<section class="py-16 md:py-24 ">
+<section class="py-16 md:py-24 bg-white">
 
     <div class="max-w-7xl mx-auto px-6">
 

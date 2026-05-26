@@ -51,6 +51,25 @@ function my_theme_widgets_init()
 add_action('widgets_init', 'my_theme_widgets_init');
 
 
+/*
+function my_theme_enqueue_styles()
+{
+    $css_file = get_template_directory() . '/output.css';
+    $css_url  = get_template_directory_uri() . '/output.css';
+
+    $version = file_exists($css_file) ? filemtime($css_file) : '1.0.0';
+
+    wp_enqueue_style(
+        'my-tailwind-style',
+        $css_url,
+        array(),
+        $version 
+    );
+}
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
+*/
+
+
 
 /*これでブラウザが最優先で画像を取得します。*/
 function preload_hero_image()
@@ -81,12 +100,33 @@ add_action('wp_head', 'preload_hero_image', 1);
 /////////////////////////////
 //      tailwindcss
 /////////////////////////////
-
+/*
 function my_theme_enqueue()
 {
     wp_enqueue_style('tailwind', get_template_directory_uri() . '/dist/output.css', [], null);
 }
 add_action('wp_enqueue_scripts', 'my_theme_enqueue');
+*/
+
+function my_theme_enqueue()
+{
+    // dist内のファイルパス
+    $css_file = get_template_directory() . '/dist/output.css';
+    $css_url  = get_template_directory_uri() . '/dist/output.css';
+
+    // 更新日時をバージョンにしてキャッシュを回避
+    $version = file_exists($css_file) ? filemtime($css_file) : '1.0.0';
+
+    wp_enqueue_style(
+        'my-tailwind-style', // ハンドル名を統一
+        $css_url,
+        array(),
+        $version
+    );
+}
+add_action('wp_enqueue_scripts', 'my_theme_enqueue');
+
+
 
 /////////////////////////////
 //      メールSMTP設定
@@ -1857,6 +1897,7 @@ function my_theme_customize_register($wp_customize)
     $wp_customize->add_setting('color_scheme', array(
         'default' => 'default',
         'sanitize_callback' => 'sanitize_text_field',
+        'transport' => 'refresh', // ← ここが 'postMessage' になっていて、JS側で古いHTMLを弄っている場合は 'refresh' に戻してみる
     ));
 
     $wp_customize->add_control('color_scheme', array(
